@@ -38,10 +38,10 @@
   // Like first, but for the last elements. If n is undefined, return just the
   // last element.
   _.last = function(array, n) {
-    if (n === 0){ 
+    if (n === 0) { 
       return [];
     }
-    return n === undefined ? array[array.length-1] : array.slice(-n);
+    return n === undefined ? array[array.length - 1] : array.slice(-n);
   };
 
   // Call iterator(value, key, collection) for each element of collection.
@@ -50,12 +50,12 @@
   // Note: _.each does not have a return value, but rather simply runs the
   // iterator function over each item in the input collection.
   _.each = function(collection, iterator) {
-    if(Array.isArray(collection)){
-      for(let i = 0; i < collection.length; i++){
-        iterator(collection[i], i, collection);
+    if (Array.isArray(collection)) {
+      for (let i = 0; i < collection.length; i++) {
+        iterator (collection[i], i, collection);
       }
-    } else if (typeof collection == 'object' && typeof collection !== null){
-      for (let key in collection){
+    } else if (typeof collection == 'object' && typeof collection !== null) {
+      for (let key in collection) {
         iterator(collection[key], key, collection);
       }
     }
@@ -82,14 +82,12 @@
   // Return all elements of an array that pass a truth test.
   _.filter = function(collection, test) {
     let filteredCollection = [];
-      _.each(collection, function(item, index){
-        if (test(collection[index]) === true){
-          filteredCollection.push(item);
+    _.each(collection, function(item, index) {
+      debugger;
+      if (test(collection[index]) === true) {
+        filteredCollection.push(item);
       }
     });
-
-blahblah
-
     return filteredCollection;
   };
 
@@ -97,6 +95,19 @@ blahblah
   _.reject = function(collection, test) {
     // TIP: see if you can re-use _.filter() here, without simply
     // copying code in and modifying it
+    
+    let filteredCollection = [];
+    _.each(collection, function(item, index) {
+      debugger;
+      if (test(collection[index]) === false) {
+        filteredCollection.push(item);
+      }
+    });
+    return filteredCollection;
+
+    /*return _.filter(collection, function(test){//something
+      if (test) return false;
+    });*/
   };
 
   // Produce a duplicate-free version of the array.
