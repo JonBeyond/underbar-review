@@ -56,7 +56,7 @@
       }
     } else if (typeof collection == 'object' && typeof collection !== null){
       for (let key in collection){
-      iterator(collection[key], key, collection);
+        iterator(collection[key], key, collection);
       }
     }
     
@@ -81,6 +81,16 @@
 
   // Return all elements of an array that pass a truth test.
   _.filter = function(collection, test) {
+    let filteredCollection = [];
+      _.each(collection, function(item, index){
+        if (test(collection[index]) === true){
+          filteredCollection.push(item);
+      }
+    });
+
+blahblah
+
+    return filteredCollection;
   };
 
   // Return all elements of an array that don't pass a truth test.
