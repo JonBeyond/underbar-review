@@ -113,12 +113,24 @@
   // Produce a duplicate-free version of the array.
   _.uniq = function(array, isSorted, iterator) {
     let newArray = [];
-    for (let i = 0; i < array.length; i++) {
-      if (!newArray.includes(array[i])) {
-        newArray.push(array[i]);
+    
+    if (iterator) {
+      let arrayTransform = _.map(array,iterator);
+      let transformedAdditions = [];
+      for (let i = 0; i < array.length; i++) {
+        if (!transformedAdditions.includes(arrayTransform[i])) {
+          newArray.push(array[i]);
+          transformedAdditions.push(arrayTransform[i]);
+        }
       }
+    } else {
+      for (let i = 0; i < array.length; i++) {
+        if (!newArray.includes(array[i])) {
+          newArray.push(array[i]);
+        }
+      } 
     }
-    return newArray;  
+    return newArray; 
   };
 
 
@@ -173,16 +185,25 @@
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
   _.reduce = function(collection, iterator, accumulator) {
-    //check if accumulator is undefined. If undefined, use the first element as the accumulator
-    //var to keep track of the index starting at 0. if no accumulator, can incriment the index and set 0 to first value
     let index = 0;
-    if (accumulator === undefined) {
-      accumulator = collection[0];
-      index++;
-    }
-    //go through collection, adjust accumulator by result
-    for (let i = index; i < collection.length; i++) {
-      accumulator = iterator(accumulator, collection[i], i, collection);
+    if (Array.isArray(collection)) {
+      if (accumulator === undefined) {
+        accumulator = collection[0];
+        index++;
+      }
+      //go through collection, adjust accumulator by result
+      for (let i = index; i < collection.length; i++) {
+        accumulator = iterator(accumulator, collection[i], i, collection);
+      }
+    } else {
+      for (let key in collection){
+        if (accumulator === undefined){ //note this is not a reliable way to store the first key...
+          accumulator = collection[key]
+        } else {
+          accumulator = iterator(accumulator, collection[key], key, collection);
+        }
+      }
+
     }
     return accumulator;
   };
@@ -203,6 +224,10 @@
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
+
+    //
+
+    _.reduce();
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
