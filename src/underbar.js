@@ -173,6 +173,18 @@
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
   _.reduce = function(collection, iterator, accumulator) {
+    //check if accumulator is undefined. If undefined, use the first element as the accumulator
+    //var to keep track of the index starting at 0. if no accumulator, can incriment the index and set 0 to first value
+    let index = 0;
+    if (accumulator === undefined) {
+      accumulator = collection[0];
+      index++;
+    }
+    //go through collection, adjust accumulator by result
+    for (let i = index; i < collection.length; i++) {
+      accumulator = iterator(accumulator, collection[i], i, collection);
+    }
+    return accumulator;
   };
 
   // Determine if the array or object contains a given value (using `===`).
