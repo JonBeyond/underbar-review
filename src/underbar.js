@@ -83,7 +83,6 @@
   _.filter = function(collection, test) {
     let filteredCollection = [];
     _.each(collection, function(item, index) {
-      debugger;
       if (test(collection[index]) === true) {
         filteredCollection.push(item);
       }
@@ -93,21 +92,10 @@
 
   // Return all elements of an array that don't pass a truth test.
   _.reject = function(collection, test) {
-    // TIP: see if you can re-use _.filter() here, without simply
-    // copying code in and modifying it
-    
-    let filteredCollection = [];
-    _.each(collection, function(item, index) {
-      debugger;
-      if (test(collection[index]) === false) {
-        filteredCollection.push(item);
-      }
-    });
-    return filteredCollection;
-
-    /*return _.filter(collection, function(test){//something
-      if (test) return false;
-    });*/
+    return _.filter(collection, function(item){ //the function inside of filter takes a single item
+      if (test(item) === true) return false;
+      else return true;
+    })
   };
 
   // Produce a duplicate-free version of the array.
@@ -223,11 +211,11 @@
 
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
-    // TIP: Try re-using reduce() here.
-
-    //
-
-    _.reduce();
+    //need to refactor this better
+    return _.reduce(collection, function(acc,item){
+      if (!iterator(item)) acc = false;
+      return acc;
+    }, true);
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
