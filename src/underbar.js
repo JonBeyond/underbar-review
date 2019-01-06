@@ -196,16 +196,18 @@
 
   // Extend a given object with all the properties of the passed in
   // object(s).
-  //
-  // Example:
-  //   var obj1 = {key1: "something"};
-  //   _.extend(obj1, {
-  //     key2: "something new",
-  //     key3: "something else new"
-  //   }, {
-  //     bla: "even more stuff"
-  //   }); // obj1 now contains key1, key2, key3 and bla
+  // Overwrites existing properties.
   _.extend = function(obj) {
+    //we need to access all of the arguments starting at arguments[1], and
+    // then use a for...in loop to copy every property.  We should go in order
+    // of the passed objs, and then return obj with the alterations.
+    //  NOTE: there is no non-mutate clause here. Obj is not returned (?)
+    for (let i = 1; i < arguments.length; i++) {//may need to alter the loop conditional
+      for (let key in arguments[i]){
+        obj[key] = arguments[i][key];
+      }
+    }
+    return obj;
   };
 
   // Like extend, but doesn't ever overwrite a key that already
