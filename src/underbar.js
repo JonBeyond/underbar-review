@@ -265,6 +265,17 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    let cached = {};
+
+    return function(){
+      let thisRun = JSON.stringify(arguments); //this will create a unique key for this argument innput
+      if (cached.hasOwnProperty(thisRun)) return cached[thisRun];
+      else {
+        cached[thisRun] = func(...arguments);
+        return cached[thisRun];
+      }
+    };
+
   };
 
   // Delays a function for the given number of milliseconds, and then calls
