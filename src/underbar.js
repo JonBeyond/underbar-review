@@ -104,19 +104,10 @@
     return mapped;
   };
 
-  /*
-   * TIP: map is really handy when you want to transform an array of
-   * values into a new array of values. _.pluck() is solved for you
-   * as an example of this.
-   */
-
   // Takes an array of objects and returns and array of the values of
   // a certain property in it. E.g. take an array of people and return
   // an array of just their ages
   _.pluck = function(collection, key) {
-    // TIP: map is really handy when you want to transform an array of
-    // values into a new array of values. _.pluck() is solved for you
-    // as an example of this.
     return _.map(collection, function(item) {
       return item[key];
     });
@@ -131,17 +122,7 @@
   // the accumulator, and is never passed to the iterator. In other words, in
   // the case where a starting value is not passed, the iterator is not invoked
   // until the second element, with the first element as its second argument.
-  //  
-  // Example:
-  //   var numbers = [1,2,3];
-  //   var sum = _.reduce(numbers, function(total, number){
-  //     return total + number;
-  //   }, 0); // should be 6
-  //  
-  //   var identity = _.reduce([5], function(total, number){
-  //     return total + number * number;
-  //   }); // should be 5, regardless of the iterator function passed in
-  //          No accumulator is given so the first element is used.
+
   _.reduce = function(collection, iterator, accumulator) {
     let index = 0;
     if (Array.isArray(collection)) {
@@ -149,13 +130,12 @@
         accumulator = collection[0];
         index++;
       }
-      //go through collection, adjust accumulator by result
       for (let i = index; i < collection.length; i++) {
         accumulator = iterator(accumulator, collection[i], i, collection);
       }
-    } else {
+    } else {  //assume no edge cases of non-collection (will return an error)
       for (let key in collection){
-        if (accumulator === undefined){ //note this is not a reliable way to store the first key...
+        if (accumulator === undefined){
           accumulator = collection[key]
         } else {
           accumulator = iterator(accumulator, collection[key], key, collection);
@@ -168,8 +148,6 @@
 
   // Determine if the array or object contains a given value (using `===`).
   _.contains = function(collection, target) {
-    // TIP: Many iteration problems can be most easily expressed in
-    // terms of reduce(). Here's a freebie to demonstrate!
     return _.reduce(collection, function(wasFound, item) {
       if (wasFound) {
         return true;
@@ -180,13 +158,27 @@
 
 
   // Determine whether all of the elements match a truth test.
-  _.every = function(collection, iterator) {
-    //need to refactor this better
-    return _.reduce(collection, function(acc,item){
-      if (!iterator(item)) acc = false;
-      return acc;
-    }, true);
+  _.every = function(collection, iterator) {    
+    if (!iterator) {
+      return _.reduce(collection, function(accumulator, value){
+        if (!_.identity(value)) accumulator = false;
+        return accumulator;
+      }, true);;
+    } else {
+      return _.reduce(collection, function(accumulator, value){ //the function inside of reduce takes a single value
+        if (!iterator(value)) accumulator = false;
+        return accumulator;
+      },true); //start with true and change to false if we find a single failure
+    }
   };
+
+  _.reject = function(collection, test) {
+    return _.filter(collection, function(item){ //the function inside of filter takes a single item
+      if (test(item) === true) return false;
+      else return true;
+    })
+  };
+
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
