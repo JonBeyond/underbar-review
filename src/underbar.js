@@ -158,32 +158,32 @@
 
 
   // Determine whether all of the elements match a truth test.
-  _.every = function(collection, iterator) {    
+  _.every = function(collection, iterator, acc) {
+    acc = acc || true;
     if (!iterator) {
       return _.reduce(collection, function(accumulator, value){
-        if (!_.identity(value)) accumulator = false;
+        if (!_.identity(value)) accumulator = !acc;
         return accumulator;
       }, true);;
     } else {
       return _.reduce(collection, function(accumulator, value){ //the function inside of reduce takes a single value
-        if (!iterator(value)) accumulator = false;
+        if (!iterator(value)) accumulator = !acc;
         return accumulator;
-      },true); //start with true and change to false if we find a single failure
+      },acc); //start with true and change to false if we find a single failure
     }
   };
-
-  _.reject = function(collection, test) {
-    return _.filter(collection, function(item){ //the function inside of filter takes a single item
-      if (test(item) === true) return false;
-      else return true;
-    })
-  };
-
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
+    if (!iterator) iterator = _.identity;
+
+    return _.reduce(collection, function(accumulator, value){
+      if (iterator(value)) accumulator = true;
+      return accumulator;
+    }, false);
+    
   };
 
 
